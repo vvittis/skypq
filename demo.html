@@ -28,6 +28,7 @@
             --orange: #ffab4c;
             --red: #ff6b6b;
             --purple: #b197fc;
+            --magenta: #f472b6;
             --chart-bg: radial-gradient(ellipse at 70% 70%, #1a1a28 0%, #0f0f14 70%);
             --point-dom: #2a2a3a;
         }
@@ -46,6 +47,7 @@
             --orange: #d97706;
             --red: #dc2626;
             --purple: #7c3aed;
+            --magenta: #db2777;
             --chart-bg: radial-gradient(ellipse at 70% 70%, #f0f2f5 0%, #ffffff 70%);
             --point-dom: #c8cdd5;
         }
@@ -503,6 +505,13 @@
             border-bottom-left-radius: 4px;
         }
 
+        .chat-bubble.kulli {
+            background: linear-gradient(135deg, rgba(244, 114, 182, 0.1), rgba(219, 39, 119, 0.1));
+            border: 1px solid rgba(244, 114, 182, 0.4);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
         .chat-bubble.thought {
             background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
             border: 1px solid rgba(139, 92, 246, 0.3);
@@ -719,6 +728,8 @@
 
         .btn:hover { filter: brightness(1.1); }
         .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn.completed { pointer-events: none; cursor: default; opacity: 0.85; }
+        .btn.completed::after { content: ' ✓'; font-size: 0.85em; }
 
         .btn-blue { background: var(--blue); color: white; }
         .btn-green { background: var(--green); color: white; }
@@ -726,6 +737,253 @@
         .btn-red { background: #ef4444; color: white; }
         .btn-ghost { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
         .btn-purple { background: var(--purple); color: white; }
+        .btn-magenta { background: var(--magenta); color: white; }
+
+        /* Query Tab Styles */
+        .query-tabs {
+            display: flex;
+            background: var(--surface2);
+            border-radius: 8px;
+            padding: 3px;
+            margin-bottom: 12px;
+        }
+
+        .query-tab {
+            flex: 1;
+            padding: 8px 12px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+            color: var(--text2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .query-tab:hover:not(:disabled) {
+            background: var(--surface);
+        }
+
+        .query-tab.active {
+            background: var(--blue);
+            color: white;
+        }
+
+        .query-tab.active.kulli {
+            background: var(--magenta);
+        }
+
+        .query-tab:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Tooltip wrapper for disabled Kulli tab */
+        .kulli-tab-wrapper {
+            position: relative;
+            flex: 1;
+            display: flex;
+        }
+
+        .kulli-tab-wrapper .query-tab {
+            flex: 1;
+        }
+
+        .kulli-tab-wrapper[data-tooltip]::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--surface);
+            color: var(--text);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            border: 1px solid var(--border);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            z-index: 1000;
+        }
+
+        .kulli-tab-wrapper[data-tooltip]::before {
+            content: '';
+            position: absolute;
+            bottom: calc(100% + 2px);
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
+            border-top-color: var(--border);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            z-index: 1000;
+        }
+
+        .kulli-tab-wrapper:hover[data-tooltip]::after,
+        .kulli-tab-wrapper:hover[data-tooltip]::before {
+            opacity: 1;
+        }
+
+        /* Hide tooltip when Kulli tab is enabled */
+        .kulli-tab-wrapper.enabled[data-tooltip]::after,
+        .kulli-tab-wrapper.enabled[data-tooltip]::before {
+            display: none;
+        }
+
+        .query-tab .tab-icon {
+            font-size: 16px;
+        }
+
+        .query-tab .tab-name {
+            font-weight: 500;
+            font-size: 13px;
+        }
+
+        .query-tab-content {
+            display: none;
+        }
+
+        .query-tab-content.active {
+            display: block;
+        }
+
+        /* Kulli Slider Styles */
+        .kulli-slider-container {
+            background: var(--surface2);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+
+        .kulli-slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .kulli-slider-label {
+            font-size: 12px;
+            color: var(--text2);
+        }
+
+        .kulli-slider-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--magenta);
+        }
+
+        .kulli-range-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .kulli-range-input {
+            flex: 1;
+        }
+
+        .kulli-range-input label {
+            display: block;
+            font-size: 10px;
+            color: var(--text3);
+            margin-bottom: 4px;
+        }
+
+        .kulli-range-input input {
+            width: 100%;
+            padding: 6px 8px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+        }
+
+        .kulli-range-input input:focus {
+            outline: none;
+            border-color: var(--magenta);
+        }
+
+        .kulli-auto-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-top: 8px;
+            border-top: 1px solid var(--border);
+        }
+
+        .kulli-auto-label {
+            font-size: 12px;
+            color: var(--text2);
+        }
+
+        .kulli-auto-toggle {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .kulli-auto-toggle.on {
+            background: var(--magenta);
+            border-color: var(--magenta);
+        }
+
+        .kulli-auto-toggle::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 18px;
+            height: 18px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+
+        .kulli-auto-toggle.on::after {
+            left: 22px;
+        }
+
+        .kulli-auto-status {
+            font-size: 11px;
+            color: var(--text3);
+            flex: 1;
+        }
+
+        .kulli-auto-status.running {
+            color: var(--magenta);
+        }
+
+        /* Kulli Result Card */
+        .result.kulli {
+            border-left-color: var(--magenta);
+        }
+
+        .result-title.magenta {
+            color: var(--magenta);
+        }
+
+        /* Legend dot for Kulli */
+        .leg-dot.kulli {
+            background: var(--magenta);
+        }
 
         .btn-with-toggle {
             display: flex;
@@ -1847,7 +2105,10 @@
                     <div class="leg-dot naive"></div>Current
                 </div>
                 <div class="leg-item" onclick="toggleLayer('optimal')" id="legOpt">
-                    <div class="leg-dot opt"></div>Optimal
+                    <div class="leg-dot opt"></div>Jordan
+                </div>
+                <div class="leg-item" onclick="toggleLayer('kulli')" id="legKulli" style="display:none;">
+                    <div class="leg-dot kulli"></div>Kulli
                 </div>
                 <div class="leg-item" onclick="toggleLayer('pareto')" id="legPareto">
                     <div class="leg-dot front"></div>Pareto
@@ -1859,39 +2120,121 @@
             <div class="card step-section active" id="section1">
                 <div class="card-head"><span class="card-num">1</span> Query Setup</div>
                 
-                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 8px 10px; background: var(--surface2); border-radius: 6px; border-left: 3px solid var(--green);">
-                    <span style="font-size: 13px; color: var(--text2);">Objective:</span>
-                    <span style="font-size: 14px; font-weight: 600; color: var(--green);">Minimize Cost</span>
+                <!-- Tab Switcher -->
+                <div class="query-tabs">
+                    <button class="query-tab active" id="tabJordan" onclick="switchQueryTab('jordan')">
+                        <span class="tab-icon">👨‍💻</span>
+                        <span class="tab-name">Jordan</span>
+                    </button>
+                    <span class="kulli-tab-wrapper" id="kulliTabWrapper" data-tooltip="Complete Jordan's query first">
+                        <button class="query-tab kulli" id="tabKulli" onclick="switchQueryTab('kulli')" disabled>
+                            <span class="tab-icon">👩‍💻</span>
+                            <span class="tab-name">Kulli</span>
+                        </button>
+                    </span>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
-                    <div class="param">
-                        <div class="param-lbl">CU ≥</div>
-                        <input type="number" id="inputPerfReq" value="800" min="10" max="1000" step="50"
-                            style="width: 100%; padding: 6px 8px; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;">
+                <!-- Jordan's Tab Content -->
+                <div class="query-tab-content active" id="jordanTabContent">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 8px 10px; background: var(--surface2); border-radius: 6px; border-left: 3px solid var(--green);">
+                        <span style="font-size: 13px; color: var(--text2);">Objective:</span>
+                        <span style="font-size: 14px; font-weight: 600; color: var(--green);">Minimize Cost</span>
                     </div>
-                    <div class="param">
-                        <div class="param-lbl">Min Items</div>
-                        <input type="number" id="inputMinItems" value="8" min="1" max="20" step="1"
-                            style="width: 100%; padding: 6px 8px; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;">
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                        <div class="param">
+                            <div class="param-lbl">CU ≥</div>
+                            <input type="number" id="inputPerfReq" value="800" min="10" max="1000" step="50"
+                                style="width: 100%; padding: 6px 8px; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;">
+                        </div>
+                        <div class="param">
+                            <div class="param-lbl">Min Items</div>
+                            <input type="number" id="inputMinItems" value="8" min="1" max="20" step="1"
+                                style="width: 100%; padding: 6px 8px; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;">
+                        </div>
+                        <div class="param">
+                            <div class="param-lbl">Max Items</div>
+                            <input type="number" id="inputMaxItems" value="12" min="1" max="20" step="1"
+                                onchange="updateK()"
+                                style="width: 100%; padding: 6px 8px; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;">
+                        </div>
+                        <div class="param">
+                            <div class="param-lbl">Repeat ρ</div>
+                            <input type="number" id="inputRepeat" value="2" min="1" max="5" step="1"
+                                onchange="updateK()"
+                                style="width: 100%; padding: 6px 8px; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;">
+                        </div>
                     </div>
-                    <div class="param">
-                        <div class="param-lbl">Max Items</div>
-                        <input type="number" id="inputMaxItems" value="12" min="1" max="20" step="1"
-                            onchange="updateK()"
-                            style="width: 100%; padding: 6px 8px; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;">
-                    </div>
-                    <div class="param">
-                        <div class="param-lbl">Repeat ρ</div>
-                        <input type="number" id="inputRepeat" value="2" min="1" max="5" step="1"
-                            onchange="updateK()"
-                            style="width: 100%; padding: 6px 8px; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;">
-                    </div>
+
+                    <button class="btn btn-blue" id="btnApplyQuery" onclick="applyQuery()" style="margin-bottom: 0;">
+                        ① Apply Query Settings
+                    </button>
                 </div>
 
-                <button class="btn btn-blue" onclick="applyQuery()" style="margin-bottom: 0;">
-                    ① Apply Query Settings
-                </button>
+                <!-- Kulli's Tab Content -->
+                <div class="query-tab-content" id="kulliTabContent">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 8px 10px; background: var(--surface2); border-radius: 6px; border-left: 3px solid var(--magenta);">
+                        <span style="font-size: 13px; color: var(--text2);">Objective:</span>
+                        <span style="font-size: 14px; font-weight: 600; color: var(--magenta);">Maximize CU</span>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+                        <div class="param">
+                            <div class="param-lbl">Min Items</div>
+                            <input type="number" id="kulliMinItems" value="5" min="1" max="20" step="1"
+                                style="width: 100%; padding: 6px 8px; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;">
+                        </div>
+                        <div class="param">
+                            <div class="param-lbl">Max Items</div>
+                            <input type="number" id="kulliMaxItems" value="8" min="1" max="20" step="1"
+                                style="width: 100%; padding: 6px 8px; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;">
+                        </div>
+                        <div class="param" style="grid-column: span 2;">
+                            <div class="param-lbl">Repeat ρ</div>
+                            <input type="number" id="kulliRepeat" value="1" min="1" max="5" step="1"
+                                style="width: 100%; padding: 6px 8px; background: var(--surface2); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 14px;">
+                        </div>
+                    </div>
+
+                    <div class="kulli-slider-container">
+                        <div class="kulli-slider-header">
+                            <span class="kulli-slider-label">Cost Budget ≤</span>
+                            <span class="kulli-slider-value" id="kulliCostDisplay">$10</span>
+                        </div>
+                        
+                        <input type="range" id="kulliCostSlider" min="2" max="20" value="10" step="1" 
+                            style="width: 100%; accent-color: var(--magenta); cursor: pointer;"
+                            oninput="updateKulliSlider()">
+                        
+                        <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text3); margin-top: 4px;">
+                            <span>$2</span>
+                            <span>$20</span>
+                        </div>
+
+                        <div class="kulli-auto-row">
+                            <span class="kulli-auto-label">Auto</span>
+                            <div class="kulli-auto-toggle" id="kulliAutoToggle" onclick="toggleKulliAuto()"></div>
+                            <span class="kulli-auto-status" id="kulliAutoStatus">Click to animate</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-magenta" onclick="solveKulliQuery()" style="margin-bottom: 10px;">
+                        <i class="fa-solid fa-play"></i> Solve Kulli's Query
+                    </button>
+
+                    <!-- Kulli's Result Card -->
+                    <div class="card result kulli" id="kulliCard" style="display:none;">
+                        <div class="result-head">
+                            <span class="result-title magenta">👩‍💻 Kulli's Package</span>
+                            <span class="result-time" id="kulliTime">—</span>
+                        </div>
+                        <div class="pkg-list" id="kulliList"></div>
+                        <div class="pkg-total">
+                            <span>Total</span>
+                            <span id="kulliTotal">—</span>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Workflow Steps 2 through 6 -->
@@ -1899,7 +2242,7 @@
                 <!-- Step 2: Greedy CU/$ -->
                 <div class="btn-section" id="section2">
                     <div class="btn-with-toggle">
-                        <button class="btn btn-red btn-main" onclick="computeEfficiency()">② Greedy: CU/$</button>
+                        <button class="btn btn-red btn-main" id="btnEfficiency" onclick="computeEfficiency()">② Greedy: CU/$</button>
                         <button class="btn btn-red btn-toggle" id="effToggle" onclick="toggleLayer('efficiency')" style="display:none;"><i class="fa-solid fa-eye"></i></button>
                     </div>
 
@@ -1919,7 +2262,7 @@
                 <!-- Step 3: Greedy CU -->
                 <div class="btn-section" id="section3">
                     <div class="btn-with-toggle">
-                        <button class="btn btn-orange btn-main" onclick="computePerformance()">③ Greedy: CU</button>
+                        <button class="btn btn-orange btn-main" id="btnPerformance" onclick="computePerformance()">③ Greedy: CU</button>
                         <button class="btn btn-orange btn-toggle" id="naiveToggle" onclick="toggleLayer('naive')" style="display:none;"><i class="fa-solid fa-eye"></i></button>
                     </div>
 
@@ -1939,7 +2282,7 @@
                 <!-- Step 4: ILP on Full Dataset -->
                 <div class="btn-section" id="section4">
                     <div class="btn-with-toggle">
-                        <button class="btn btn-purple btn-main" onclick="solveFullILP()">④ Solve ILP (Full)</button>
+                        <button class="btn btn-purple btn-main" id="btnFullILP" onclick="solveFullILP()">④ Solve ILP (Full)</button>
                         <button class="btn btn-purple btn-toggle" id="fullOptToggle" onclick="toggleLayer('fullOptimal')" style="display:none;"><i class="fa-solid fa-eye"></i></button>
                     </div>
 
@@ -1961,7 +2304,7 @@
                 <!-- Step 5: K-Skyband -->
                 <div class="btn-section" id="section5">
                     <div class="btn-with-toggle">
-                        <button class="btn btn-blue btn-main" onclick="computeSkyband()">⑤ Compute K-Skyband</button>
+                        <button class="btn btn-blue btn-main" id="btnSkyband" onclick="computeSkyband()">⑤ Compute K-Skyband</button>
                         <button class="btn btn-blue btn-toggle" id="skyToggle" onclick="toggleLayer('skyband')" style="display:none;"><i class="fa-solid fa-eye"></i></button>
                     </div>
                 </div>
@@ -2129,6 +2472,16 @@
         <div class="tour-callout-title">Playground</div>
         <div class="tour-callout-text">Drag, delete, add points</div>
     </div>
+    <div class="tour-callout" id="callout7">
+        <div class="tour-callout-num">8</div>
+        <div class="tour-callout-title">Kulli's Thoughts</div>
+        <div class="tour-callout-text">Different objective, same skyband</div>
+    </div>
+    <div class="tour-callout" id="callout8">
+        <div class="tour-callout-num">9</div>
+        <div class="tour-callout-title">Kulli's Query</div>
+        <div class="tour-callout-text">Maximize performance within budget</div>
+    </div>
 
     <script>
         // ============================================================
@@ -2156,6 +2509,9 @@
         let highs = null;
         let highsReady = false;
         let highsLoadPromise = null;
+        let highsSolving = false; // Mutex to prevent concurrent solves
+        let highsSolveCount = 0;  // Track number of solves since last reinit
+        const MAX_SOLVES_BEFORE_REINIT = 3; // Reinit HiGHS every N solves to prevent corruption
         
         async function initHiGHS() {
             if (highsReady) return highs;
@@ -2169,6 +2525,8 @@
                         locateFile: (file) => `https://cdn.jsdelivr.net/npm/highs@1.8.0/build/${file}`
                     });
                     highsReady = true;
+                    highsSolving = false;
+                    highsSolveCount = 0;
                     console.log('HiGHS solver ready!');
                     return highs;
                 } catch (e) {
@@ -2178,6 +2536,15 @@
             })();
             
             return highsLoadPromise;
+        }
+        
+        // Force reinit of HiGHS - needed to prevent WASM corruption in repeated solves
+        async function forceReinitHiGHS() {
+            console.log('Force reinitializing HiGHS...');
+            highsReady = false;
+            highsLoadPromise = null;
+            highsSolveCount = 0;
+            return initHiGHS();
         }
         
         // Start loading HiGHS immediately
@@ -2297,6 +2664,22 @@
         let scenarioNewSolution = null;
         let scenarioNewVMs = []; // For catalog update scenario
         let scenarioPromotedIds = new Set(); // Points promoted to skyband in discontinued scenario
+
+        // Kulli state
+        let activeQueryTab = 'jordan';  // 'jordan' or 'kulli'
+        let kulliEnabled = false;       // Only enabled after Jordan completes step 6
+        let kulliCostBudget = 10;       // Cost budget for Kulli (upper bound, min is 0)
+        let kulliSolution = [];         // Kulli's package solution
+        let kulliOptCost = 0;
+        let kulliOptPerf = 0;
+        let visKulli = true;            // Visibility toggle for Kulli's solution
+        let kulliAutoPlay = false;      // Auto-play animation state
+        let kulliAutoInterval = null;   // Interval for auto-play
+        
+        // Kulli's query parameters (editable)
+        let kulliMinItems = 5;
+        let kulliMaxItems = 8;
+        let kulliRepeatLimit = 1;
 
         // Step navigation state
         let currentStep = 0;  // Which step we've completed (1-7), 0 means none
@@ -2430,6 +2813,15 @@
                 return { feasible: false, sol: [], perf: 0, cost: 0, error: 'Solver not ready' };
             }
             
+            // Check if another solve is in progress
+            if (highsSolving) {
+                console.warn('solveILP: Another solve in progress, waiting...');
+                return { feasible: false, sol: [], perf: 0, cost: 0, error: 'Solver busy' };
+            }
+            
+            // Set solving flag
+            highsSolving = true;
+            
             // Build LP format based on mode
             const isMinimize = mode === 'jordan';
             const optimizeField = mode === 'jordan' ? 'cost' : 'perf';
@@ -2442,12 +2834,17 @@
             );
             
             if (!lp) {
+                highsSolving = false;
                 return { feasible: false, sol: [], perf: 0, cost: 0 };
             }
             
             try {
                 // Solve with HiGHS
                 const result = highs.solve(lp);
+                
+                // Clear solving flag and increment solve count
+                highsSolving = false;
+                highsSolveCount++;
                 
                 if (result.Status !== 'Optimal') {
                     console.log('HiGHS status:', result.Status);
@@ -2475,6 +2872,7 @@
                 return { feasible: true, sol, perf: totalPerf, cost: totalCost };
                 
             } catch (e) {
+                highsSolving = false;
                 console.error('HiGHS solve error:', e);
                 return { feasible: false, sol: [], perf: 0, cost: 0, error: e.message };
             }
@@ -2668,7 +3066,7 @@
             
             // Also include any solution points (for greedy attempts before skyband is shown)
             active.forEach(d => {
-                if (d.inOpt || d.inFullOpt || d.inNaive || d.inEfficiency) {
+                if (d.inOpt || d.inFullOpt || d.inNaive || d.inEfficiency || d.inKulli) {
                     sampledIds.add(d.id);
                 }
             });
@@ -2755,10 +3153,15 @@
             }
             // Promoted points in discontinued scenario - show as skyband size
             if (scenarioActive && scenarioPromotedIds && scenarioPromotedIds.has(d.id)) return 7;
+            // Kulli's solution - distinct size
+            if (d.inKulli && visKulli) return 11;
             if (d.inOpt && visOptimal) return 10;
             if (d.inFullOpt && visFullOptimal) return 9;
-            if (d.inNaive && visNaive) return 9;
-            if (d.inEfficiency && visEfficiency) return 8;
+            // Greedy solutions - show only when Jordan tab is active
+            if (activeQueryTab === 'jordan') {
+                if (d.inEfficiency && visEfficiency) return 8;
+                if (d.inNaive && visNaive) return 8;
+            }
             if (d.domCount === 0 && computed) return 7;  // Pareto/skyline
             if (d.inSky && visSkyband) return 6;         // Skyband
             return 5;                                      // Grey dominated points
@@ -2775,10 +3178,15 @@
                 if (priceUp) return 'var(--red)';
                 if (priceDown) return 'var(--green)';
             }
+            // Kulli's solution - magenta
+            if (d.inKulli && visKulli) return 'var(--magenta)';
             if (d.inOpt && visOptimal) return 'var(--green)';
             if (d.inFullOpt && visFullOptimal) return 'var(--purple)';
-            if (d.inNaive && visNaive) return 'var(--orange)';
-            if (d.inEfficiency && visEfficiency) return '#ef4444'; // Red for failed efficiency attempt
+            // Greedy solutions - show only when Jordan tab is active
+            if (activeQueryTab === 'jordan') {
+                if (d.inEfficiency && visEfficiency) return 'var(--red)';
+                if (d.inNaive && visNaive) return 'var(--orange)';
+            }
             // Before K-skyband computed: all points are blue
             if (!computed) return 'var(--blue)';
             // After K-skyband computed: Pareto frontier is cyan, skyband is blue, dominated is grey
@@ -2794,10 +3202,15 @@
                 const isHighlighted = scenarioNewVMs.some(item => item.vm && item.vm.id === d.id);
                 if (isHighlighted) return 1;
             }
+            // Kulli's solution
+            if (d.inKulli && visKulli) return 1;
             if (d.inOpt && visOptimal) return 1;
             if (d.inFullOpt && visFullOptimal) return 1;
-            if (d.inNaive && visNaive) return 1;
-            if (d.inEfficiency && visEfficiency) return 0.85;
+            // Greedy solutions - show only when Jordan tab is active
+            if (activeQueryTab === 'jordan') {
+                if (d.inEfficiency && visEfficiency) return 1;
+                if (d.inNaive && visNaive) return 1;
+            }
             // Before K-skyband computed: all points visible but subtle
             if (!computed) return 0.5;
             if (d.inSky && visSkyband) return 0.85;
@@ -2806,17 +3219,26 @@
 
         function stroke(d) {
             if (scenarioActive && scenarioKeyPoint && d.id === scenarioKeyPoint.id) return 'var(--red)';
+            if (d.inKulli && visKulli) return 'var(--text)';
             if (d.inOpt && visOptimal) return 'var(--text)';
             if (d.inFullOpt && visFullOptimal) return 'var(--text)';
-            if (d.inNaive && visNaive) return 'var(--text)';
-            if (d.inEfficiency && visEfficiency) return '#ef4444';
+            // Greedy solutions - black stroke when Jordan tab is active
+            if (activeQueryTab === 'jordan') {
+                if (d.inEfficiency && visEfficiency) return 'var(--text)';
+                if (d.inNaive && visNaive) return 'var(--text)';
+            }
             return 'none';
         }
 
         function strokeW(d) {
             if (scenarioActive && scenarioKeyPoint && d.id === scenarioKeyPoint.id) return 5;
-            if ((d.inOpt && visOptimal) || (d.inFullOpt && visFullOptimal) || (d.inNaive && visNaive)) return 2.5;
-            if (d.inEfficiency && visEfficiency) return 2;
+            if (d.inKulli && visKulli) return 3;
+            if ((d.inOpt && visOptimal) || (d.inFullOpt && visFullOptimal)) return 2.5;
+            // Greedy solutions - stroke width when Jordan tab is active
+            if (activeQueryTab === 'jordan') {
+                if (d.inEfficiency && visEfficiency) return 2;
+                if (d.inNaive && visNaive) return 2;
+            }
             return 0;
         }
 
@@ -2880,6 +3302,15 @@
                 case 'pareto':
                     visPareto = !visPareto;
                     document.getElementById('legPareto').classList.toggle('off', !visPareto);
+                    break;
+                case 'kulli':
+                    visKulli = !visKulli;
+                    document.getElementById('legKulli').classList.toggle('off', !visKulli);
+                    // Also toggle the result card visibility
+                    const kulliCard = document.getElementById('kulliCard');
+                    if (kulliCard) {
+                        kulliCard.style.display = visKulli && kulliSolution.length > 0 ? 'block' : 'none';
+                    }
                     break;
             }
             updatePoints();
@@ -3842,6 +4273,9 @@
             notify('Query Updated', `CU≥${PERF_REQ}, ${MIN_ITEMS}-${MAX_ITEMS} items, K=${K}`, 'blue');
             jordanReact('query', { total: data.length });
             
+            // Disable this step's button after completion
+            document.getElementById('btnApplyQuery').classList.add('completed');
+            
             // Set currentStep immediately, save snapshot after dialogue renders
             currentStep = 1;
             highestStepCompleted = Math.max(highestStepCompleted, 1);
@@ -3914,6 +4348,9 @@
                 jordanReact('efficiency_fail', { perf: result.perf.toFixed(0), cost: result.cost.toFixed(2) });
             }
             
+            // Disable this step's button after completion
+            document.getElementById('btnEfficiency').classList.add('completed');
+            
             // Set currentStep immediately, save snapshot after dialogue renders
             currentStep = 2;
             highestStepCompleted = Math.max(highestStepCompleted, 2);
@@ -3967,6 +4404,9 @@
             updatePoints();
             notify('Performance', `$${result.cost.toFixed(2)}`, 'orange');
             jordanReact('performance', { perf: result.perf.toFixed(0), cost: result.cost.toFixed(2), count: data.length });
+            
+            // Disable this step's button after completion
+            document.getElementById('btnPerformance').classList.add('completed');
             
             // Set currentStep immediately, save snapshot after dialogue renders
             currentStep = 3;
@@ -4067,6 +4507,9 @@
                 const costSaved = greedyCost ? (greedyCost - result.cost).toFixed(2) : null;
                 jordanReact('full_ilp', { count: active.length, time: formatTime(ms), cost: result.cost.toFixed(2), savings: savings.toFixed(0), greedyCost: greedyCost ? greedyCost.toFixed(2) : null, costSaved: costSaved, append: true });
                 
+                // Disable this step's button after completion
+                document.getElementById('btnFullILP').classList.add('completed');
+                
                 // Set currentStep immediately, save snapshot after dialogue renders
                 currentStep = 4;
                 highestStepCompleted = Math.max(highestStepCompleted, 4);
@@ -4095,6 +4538,9 @@
             const pruned = ((1 - sky.length / data.length) * 100).toFixed(0);
             notify('K-Skyband', `${sky.length} points (${ms}ms)`, 'green');
             jordanReact('skyband', { count: sky.length, pruned: pruned });
+            
+            // Disable this step's button after completion
+            document.getElementById('btnSkyband').classList.add('completed');
             
             // Set currentStep immediately, save snapshot after dialogue renders
             currentStep = 5;
@@ -4172,6 +4618,9 @@
             updatePoints();
             notify('ILP (Skyband)', `$${result.cost.toFixed(2)} in ${formatTime(ms)}`, 'green');
             jordanReact('skyband_ilp', { count: cands.length, time: formatTime(ms), cost: result.cost.toFixed(2), speedup: speedup });
+            
+            // Mark this step's button as completed
+            document.getElementById('btnSolve').classList.add('completed');
             
             // Enable playground now that step 6 is complete
             enablePlayground();
@@ -4282,6 +4731,37 @@
             scenarioActive = false;
             scenarioPromotedIds = new Set(); // Clear promoted points
             
+            // Reset Kulli state
+            kulliSolution = [];
+            kulliOptCost = 0;
+            kulliOptPerf = 0;
+            visKulli = true;
+            stopKulliAuto();
+            kulliCostBudget = 10;
+            kulliMinItems = 5;
+            kulliMaxItems = 8;
+            kulliRepeatLimit = 1;
+            document.getElementById('kulliCostSlider').value = 10;
+            document.getElementById('kulliCostDisplay').textContent = '$10';
+            document.getElementById('kulliMinItems').value = 5;
+            document.getElementById('kulliMaxItems').value = 8;
+            document.getElementById('kulliRepeat').value = 1;
+            document.getElementById('kulliCard').style.display = 'none';
+            document.getElementById('legKulli').style.display = 'none';
+            document.getElementById('legKulli').classList.remove('off');
+            data.forEach(d => d.inKulli = false);
+            
+            // Switch back to Jordan's tab and restore dialogue panel
+            activeQueryTab = 'jordan';
+            document.getElementById('tabJordan').classList.add('active');
+            document.getElementById('tabKulli').classList.remove('active');
+            document.getElementById('jordanTabContent').classList.add('active');
+            document.getElementById('kulliTabContent').classList.remove('active');
+            document.querySelector('.workflow-steps').style.display = 'flex';
+            document.querySelector('.dialogue-avatar').textContent = '👨‍💻';
+            document.querySelector('.dialogue-name').textContent = 'Jordan';
+            document.querySelector('.dialogue-role').textContent = 'Cloud Infrastructure Engineer';
+            
             // Reset playground
             disablePlayground();
             
@@ -4306,7 +4786,21 @@
             document.getElementById('statTotal').textContent = data.length;
             document.getElementById('statSky').textContent = '—';
             document.getElementById('statPrune').textContent = '—';
-            document.getElementById('btnSolve').disabled = true;
+            
+            // Re-enable all workflow buttons and clear completed state
+            document.getElementById('btnApplyQuery').disabled = false;
+            document.getElementById('btnApplyQuery').classList.remove('completed');
+            document.getElementById('btnEfficiency').disabled = false;
+            document.getElementById('btnEfficiency').classList.remove('completed');
+            document.getElementById('btnPerformance').disabled = false;
+            document.getElementById('btnPerformance').classList.remove('completed');
+            document.getElementById('btnFullILP').disabled = false;
+            document.getElementById('btnFullILP').classList.remove('completed');
+            document.getElementById('btnSkyband').disabled = false;
+            document.getElementById('btnSkyband').classList.remove('completed');
+            document.getElementById('btnSolve').disabled = true; // This one stays disabled until skyband is computed
+            document.getElementById('btnSolve').classList.remove('completed');
+            
             document.getElementById('effCard').style.display = 'none';
             document.getElementById('naiveCard').style.display = 'none';
             document.getElementById('fullOptCard').style.display = 'none';
@@ -4645,6 +5139,20 @@
             // Update enable state of solve button
             document.getElementById('btnSolve').disabled = !computed;
             
+            // Update completed states of buttons based on step
+            // Step 1: Apply Query, Step 2: Efficiency, Step 3: Performance, Step 4: Full ILP, Step 5: Skyband, Step 6: Solve
+            const buttons = ['btnApplyQuery', 'btnEfficiency', 'btnPerformance', 'btnFullILP', 'btnSkyband', 'btnSolve'];
+            buttons.forEach((btnId, i) => {
+                const btn = document.getElementById(btnId);
+                if (i < step) {
+                    btn.classList.add('completed');
+                    btn.disabled = false;
+                } else {
+                    btn.classList.remove('completed');
+                    btn.disabled = (btnId === 'btnSolve' && !computed);
+                }
+            });
+            
             // Re-render chart
             updatePoints();
             drawPareto();
@@ -4759,15 +5267,21 @@
         // JORDAN DIALOGUE
         // ============================================================
 
+        let pendingDialogueTimeouts = [];
+
         function addDialogue(messages, clear = false, onComplete = null) {
             const container = document.getElementById('dialogueMessages');
+            
+            // Cancel any pending message additions
+            pendingDialogueTimeouts.forEach(t => clearTimeout(t));
+            pendingDialogueTimeouts = [];
             
             if (clear) {
                 container.innerHTML = '';
             }
             
             messages.forEach((msg, i) => {
-                setTimeout(() => {
+                const timeoutId = setTimeout(() => {
                     const bubble = document.createElement('div');
                     bubble.className = `chat-bubble ${msg.type || 'jordan'}`;
                     bubble.innerHTML = msg.text;
@@ -4779,6 +5293,7 @@
                         setTimeout(onComplete, 100);
                     }
                 }, i * 400); // Stagger messages
+                pendingDialogueTimeouts.push(timeoutId);
             });
         }
 
@@ -4817,7 +5332,7 @@
                 'full_ilp': [
                     { text: `<span class="emoji">⏱️</span> Done in <strong>${data.time}</strong>! Optimal cost: <strong>$${data.cost}</strong>`, type: 'success' },
                     { text: `That's <strong>${data.savings}% cheaper</strong> than the greedy approach — saving <strong>$${data.costSaved}/hr</strong>! (was $${data.greedyCost})`, type: 'thought' },
-                    { text: `<span class="emoji">😰</span> But ${data.time} on ${data.count} items... I <em>really</em> don't want to run this again every time something changes.`, type: 'warning' },
+                    { text: `<span class="emoji">🤔</span> OK, ${data.time} is fast enough for now... but what if I need to re-run this every time prices change?`, type: 'warning' },
                     { text: `<span class="emoji">🤔</span> Wait... do I really need to consider <em>all</em> ${data.count} VMs? Some are clearly worse than others...`, type: 'jordan' },
                     { text: `If VM <strong>A</strong> has <em>higher CU AND lower cost</em> than VM <strong>B</strong>, why would I ever pick B?`, type: 'thought' }
                 ],
@@ -5167,7 +5682,8 @@
                 { id: 'callout3', selector: '.workflow-steps', showNum: true, num: '2' },
                 { id: 'callout4', selector: '#section7', showNum: true, num: '3' },
                 { id: 'callout5', selector: '.dialogue-panel', showNum: false },
-                { id: 'callout6', selector: '#section8', showNum: false }
+                { id: 'callout6', selector: '#section8', showNum: false },
+                { id: 'callout8', selector: '#kulliTabWrapper', showNum: true, num: '9' }
             ];
             
             calloutTargets.forEach(({ id, selector, showNum, num }) => {
@@ -5194,7 +5710,7 @@
 
         function hideScreenshotCallouts() {
             // Restore original numbers when exiting screenshot mode
-            const originalNums = ['1', '2', '3', '4', '5', '7', '6'];
+            const originalNums = ['1', '2', '3', '4', '5', '7', '6', '8', '9'];
             document.querySelectorAll('.tour-callout').forEach((callout, i) => {
                 callout.classList.remove('show', 'screenshot-mode');
                 const numEl = callout.querySelector('.tour-callout-num');
@@ -5229,6 +5745,11 @@
                 left = rect.left - 190;
                 top = rect.top + Math.min(20, rect.height / 2 - 30);
             }
+            // For Kulli tab wrapper, position to the left
+            else if (targetEl.id === 'kulliTabWrapper') {
+                left = rect.left - 320;
+                top = rect.top + 10;
+            }
             // For sidebar sections, position to the left
             else if (targetEl.id === 'section7' || targetEl.classList.contains('workflow-steps')) {
                 left = rect.left - 220;
@@ -5261,6 +5782,7 @@
         // ============================================================
 
         let tourStep = 0;
+        let previousTourStep = -1;
         const tourSteps = [
             {
                 title: 'Welcome to our Demo',
@@ -5275,7 +5797,7 @@
             },
             {
                 title: 'Progress Tracker',
-                subtitle: 'Step 2 of 8',
+                subtitle: 'Step 2 of 9',
                 content: `The numbered dots at the top track your progress through the <strong>7-step workflow</strong>.<br><br>
                     Each step builds on the previous — from setting up requirements to testing real-world scenarios.<br><br>
                     Use the <strong>◀ ▶ arrows</strong> to navigate back and replay previous steps.`,
@@ -5286,7 +5808,7 @@
             },
             {
                 title: 'Visualization',
-                subtitle: 'Step 3 of 8',
+                subtitle: 'Step 3 of 9',
                 content: `Each dot represents a <strong>VM option</strong> you could rent.<br><br>
                     <strong>Compute Units (CU)</strong> — a standardized measure of processing power.<br>
                     <strong>Cost ($/hr)</strong> — the hourly rental price for the VM.<br><br>
@@ -5300,7 +5822,7 @@
             },
             {
                 title: 'Query Setup',
-                subtitle: 'Step 4 of 8',
+                subtitle: 'Step 4 of 9',
                 content: `Define what you need from your VM bundle:<br><br>
                     • <em>CU ≥</em>: Minimum total Compute Units required<br>
                     • <em>Min/Max Items</em>: How many VMs to include<br>
@@ -5313,7 +5835,7 @@
             },
             {
                 title: 'Optimization Workflow',
-                subtitle: 'Step 5 of 8',
+                subtitle: 'Step 5 of 9',
                 content: `Work through these steps to find the optimal bundle:<br><br>
                     <em>②/③</em>: Try simple greedy approaches (they fail or are expensive!)<br>
                     <em>④</em>: Use ILP solver on all VMs (slow but correct)<br>
@@ -5326,7 +5848,7 @@
             },
             {
                 title: 'What-If Scenarios',
-                subtitle: 'Step 6 of 8',
+                subtitle: 'Step 6 of 9',
                 content: `Real-world conditions change! Test how your solution adapts:<br><br>
                     <em>VM Discontinued</em>: A key VM in your package gets removed<br>
                     <em>Price Update</em>: VM prices go up or down<br><br>
@@ -5338,7 +5860,7 @@
             },
             {
                 title: 'Playground',
-                subtitle: 'Step 7 of 8',
+                subtitle: 'Step 7 of 9',
                 content: `After solving, unlock the <strong>Playground</strong> for hands-on exploration:<br><br>
                     <em>Drag</em>: Move points to change their CU/Cost<br>
                     <em>Delete</em>: Click to remove VMs from the catalog<br>
@@ -5351,12 +5873,25 @@
             },
             {
                 title: 'Jordan\'s Thoughts',
-                subtitle: 'Step 8 of 8',
+                subtitle: 'Step 8 of 9',
                 content: `Meet <strong>Jordan</strong>, a cloud infrastructure analyst facing this exact problem.<br><br>
                     Watch Jordan's thought process as they work through each step, react to results, and handle unexpected changes.<br><br>
-                    <em>Tip:</em> Click <strong>↺ Start Over</strong> anytime to reset the demo.`,
+                    Jordan's goal: <em>minimize cost</em> while meeting a compute requirement.`,
                 calloutIndex: 5,
                 targetSelector: '.dialogue-panel',
+                primaryBtn: 'Next →',
+                secondaryBtn: '← Back'
+            },
+            {
+                title: 'Meet Kulli',
+                subtitle: 'Step 9 of 9',
+                content: `<strong>Kulli</strong> is a data scientist with a <em>different objective</em>: maximize compute units within a fixed budget.<br><br>
+                    The key insight: Kulli can <strong>reuse Jordan's K-Skyband</strong> — dominance depends only on preference directions, not the objective function.<br><br>
+                    Switch to the <strong>Kulli tab</strong> after completing Jordan's workflow to see this in action!<br><br>
+                    <em>Tip:</em> Click <strong>↺ Start Over</strong> anytime to reset the demo.`,
+                calloutIndex: 7,
+                targetSelector: '.dialogue-panel',
+                isKulliStep: true,
                 primaryBtn: 'Start Demo →',
                 secondaryBtn: '← Back'
             }
@@ -5366,8 +5901,18 @@
             const rect = targetEl.getBoundingClientRect();
             let left, top;
             
+            // Special case for Kulli callout (callout7) - position to the right of dialogue
+            if (calloutEl.id === 'callout7') {
+                left = rect.right + 20;
+                top = rect.top + 40;
+            }
+            // Special case for Kulli tab callout (callout8) - position to the left of the tab
+            else if (calloutEl.id === 'callout8') {
+                left = rect.left - 320;
+                top = rect.top + 20;
+            }
             // For progress steps in header, position below
-            if (targetEl.classList.contains('steps')) {
+            else if (targetEl.classList.contains('steps')) {
                 left = rect.left + (rect.width / 2) - 100;
                 top = rect.bottom + 15;
             }
@@ -5412,7 +5957,7 @@
             });
         }
 
-        function highlightTarget(selector) {
+        function highlightTarget(selector, isKulliStep = false) {
             // Remove all previous highlights and sidebar adjustments
             document.querySelectorAll('.tour-highlight-target').forEach(el => {
                 el.classList.remove('tour-highlight-target');
@@ -5421,6 +5966,37 @@
             if (sidebar) {
                 sidebar.style.zIndex = '';
                 sidebar.classList.remove('tour-sidebar-active');
+            }
+            
+            // For Kulli step, highlight both section1 and dialogue-panel
+            if (isKulliStep) {
+                const section1 = document.getElementById('section1');
+                const dialoguePanel = document.querySelector('.dialogue-panel');
+                const kulliTabWrapper = document.getElementById('kulliTabWrapper');
+                if (section1) section1.classList.add('tour-highlight-target');
+                if (dialoguePanel) dialoguePanel.classList.add('tour-highlight-target');
+                // Don't highlight the Kulli tab itself - just show the callout
+                
+                // Lift sidebar for both
+                if (sidebar) {
+                    sidebar.style.zIndex = '9999';
+                    sidebar.classList.add('tour-sidebar-active');
+                }
+                
+                // Position callout near dialogue panel
+                const step = tourSteps[tourStep];
+                const callout = document.getElementById('callout' + step.calloutIndex);
+                if (callout && dialoguePanel) {
+                    positionCallout(callout, dialoguePanel);
+                }
+                
+                // Also show and position callout8 (Kulli's Query tab)
+                const callout8 = document.getElementById('callout8');
+                if (callout8 && kulliTabWrapper) {
+                    positionCallout(callout8, kulliTabWrapper);
+                    callout8.classList.add('show');
+                }
+                return;
             }
             
             // Add highlight to target
@@ -5463,12 +6039,83 @@
                 sidebar.style.overflow = 'visible';
             }
             
+            // Handle Kulli step - show Kulli's tab and thoughts
+            if (step.isKulliStep) {
+                // Temporarily enable and switch to Kulli's tab for the tour
+                const kulliTab = document.getElementById('tabKulli');
+                const jordanTab = document.getElementById('tabJordan');
+                const jordanContent = document.getElementById('jordanTabContent');
+                const kulliContent = document.getElementById('kulliTabContent');
+                const dialogueAvatar = document.querySelector('.dialogue-avatar');
+                const dialogueName = document.querySelector('.dialogue-name');
+                const dialogueRole = document.querySelector('.dialogue-role');
+                
+                // Show Kulli's tab as active (without actually enabling it)
+                kulliTab.classList.add('active');
+                kulliTab.style.opacity = '1';
+                jordanTab.classList.remove('active');
+                
+                // Show Kulli's content
+                kulliContent.classList.add('active');
+                jordanContent.classList.remove('active');
+                
+                // Update dialogue panel to Kulli
+                dialogueAvatar.textContent = '👩‍💻';
+                dialogueName.textContent = 'Kulli';
+                dialogueRole.textContent = 'Data Scientist';
+                
+                // Add Kulli intro messages for the tour
+                addDialogue([
+                    { text: `<span class="emoji">👋</span> Hi! I'm <strong>Kulli</strong>, the data scientist.`, type: 'kulli' },
+                    { text: `My goal is to <strong>maximize compute units</strong> within a budget.`, type: 'thought' },
+                    { text: `I reuse the <strong>same K-Skyband</strong> that Jordan computed!`, type: 'thought' }
+                ], true);
+            } else {
+                // Reset to Jordan's tab if we're not on Kulli step
+                const kulliTab = document.getElementById('tabKulli');
+                const jordanTab = document.getElementById('tabJordan');
+                const jordanContent = document.getElementById('jordanTabContent');
+                const kulliContent = document.getElementById('kulliTabContent');
+                const dialogueAvatar = document.querySelector('.dialogue-avatar');
+                const dialogueName = document.querySelector('.dialogue-name');
+                const dialogueRole = document.querySelector('.dialogue-role');
+                
+                kulliTab.classList.remove('active');
+                kulliTab.style.opacity = '';
+                jordanTab.classList.add('active');
+                jordanContent.classList.add('active');
+                kulliContent.classList.remove('active');
+                dialogueAvatar.textContent = '👨‍💻';
+                dialogueName.textContent = 'Jordan';
+                dialogueRole.textContent = 'Cloud Infrastructure Engineer';
+                
+                // Only reset dialogue when coming FROM the Kulli step (step 8)
+                const kulliStepIndex = tourSteps.length - 1; // Last step is Kulli
+                if (previousTourStep === kulliStepIndex) {
+                    const container = document.getElementById('dialogueMessages');
+                    pendingDialogueTimeouts.forEach(t => clearTimeout(t));
+                    pendingDialogueTimeouts = [];
+                    container.innerHTML = `
+                        <div class="chat-bubble jordan">
+                            <span class="emoji">📩</span> New ticket just came in: <strong>"Review VM costs for ML pipeline"</strong>
+                        </div>
+                        <div class="chat-bubble thought">
+                            Let me check what we need... Click <strong>① Apply Query Settings</strong> to get started.
+                        </div>
+                    `;
+                }
+            }
+            
             // Scroll to target if it's the Playground or What-If section
             if (step.targetSelector === '#section8' || step.targetSelector === '#section7') {
                 const target = document.querySelector(step.targetSelector);
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
+            }
+            // Scroll to top for Kulli step (shows both Query Setup tabs and dialogue panel)
+            else if (step.isKulliStep) {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
             }
             // Scroll back up for Jordan's Thoughts and earlier steps
             else if (step.targetSelector === '.dialogue-panel') {
@@ -5481,11 +6128,11 @@
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
             
-            // Highlight the target element
-            highlightTarget(step.targetSelector);
-            
-            // Show only the active callout
+            // Show only the active callout first
             showCallouts(step.calloutIndex);
+            
+            // Highlight the target element (for Kulli step, this also shows callout8)
+            highlightTarget(step.targetSelector, step.isKulliStep);
             
             let html = '';
             
@@ -5502,7 +6149,7 @@
             html += `<div class="tour-actions">`;
             if (step.secondaryBtn) {
                 const isBack = step.secondaryBtn.includes('Back');
-                html += `<button class="tour-btn secondary" onclick="${isBack ? 'prevTourStep()' : 'closeTour()'}">${step.secondaryBtn}</button>`;
+                html += `<button class="tour-btn secondary" onclick="${isBack ? 'goToPrevTourStep()' : 'closeTour()'}">${step.secondaryBtn}</button>`;
             }
             html += `<button class="tour-btn primary" onclick="${tourStep === tourSteps.length - 1 ? 'closeTour()' : 'nextTourStep()'}">${step.primaryBtn}</button>`;
             html += `</div>`;
@@ -5530,6 +6177,37 @@
             showCallouts(-1); // Hide all callouts
             highlightTarget(null); // Remove highlights
             
+            // Reset tabs back to Jordan
+            const kulliTab = document.getElementById('tabKulli');
+            const jordanTab = document.getElementById('tabJordan');
+            const jordanContent = document.getElementById('jordanTabContent');
+            const kulliContent = document.getElementById('kulliTabContent');
+            const dialogueAvatar = document.querySelector('.dialogue-avatar');
+            const dialogueName = document.querySelector('.dialogue-name');
+            const dialogueRole = document.querySelector('.dialogue-role');
+            
+            kulliTab.classList.remove('active');
+            kulliTab.style.opacity = '';
+            jordanTab.classList.add('active');
+            jordanContent.classList.add('active');
+            kulliContent.classList.remove('active');
+            dialogueAvatar.textContent = '👨‍💻';
+            dialogueName.textContent = 'Jordan';
+            dialogueRole.textContent = 'Cloud Infrastructure Engineer';
+            
+            // Reset dialogue to Jordan's initial messages immediately (no staggering)
+            const container = document.getElementById('dialogueMessages');
+            pendingDialogueTimeouts.forEach(t => clearTimeout(t));
+            pendingDialogueTimeouts = [];
+            container.innerHTML = `
+                <div class="chat-bubble jordan">
+                    <span class="emoji">📩</span> New ticket just came in: <strong>"Review VM costs for ML pipeline"</strong>
+                </div>
+                <div class="chat-bubble thought">
+                    Let me check what we need... Click <strong>① Apply Query Settings</strong> to get started.
+                </div>
+            `;
+            
             // Remove layout-mode AFTER the fade transition completes
             setTimeout(() => {
                 overlay.classList.remove('layout-mode');
@@ -5547,13 +6225,15 @@
 
         function nextTourStep() {
             if (tourStep < tourSteps.length - 1) {
+                previousTourStep = tourStep;
                 tourStep++;
                 renderTourStep();
             }
         }
 
-        function prevTourStep() {
+        function goToPrevTourStep() {
             if (tourStep > 0) {
+                previousTourStep = tourStep;
                 tourStep--;
                 renderTourStep();
             }
@@ -5576,6 +6256,9 @@
             document.getElementById('modeAdd').disabled = false;
             document.getElementById('playgroundStatus').innerHTML = 'Select a mode to interact with the visualization';
             document.getElementById('playgroundNote').style.display = 'block';
+            
+            // Enable Kulli's tab
+            enableKulliTab();
         }
 
         function disablePlayground() {
@@ -5586,6 +6269,9 @@
             document.getElementById('modeAdd').disabled = true;
             document.getElementById('playgroundStatus').innerHTML = '<em>Complete steps ⑤ and ⑥ first to enable playground</em>';
             document.getElementById('playgroundNote').style.display = 'none';
+            
+            // Disable Kulli's tab
+            disableKulliTab();
         }
 
         function setPlaygroundMode(mode) {
@@ -6065,6 +6751,56 @@
             updatePoints();
             drawPareto();
             
+            // ============================================
+            // KULLI: Recompute Kulli's solution if enabled
+            // ============================================
+            if (kulliEnabled && kulliSolution.length > 0) {
+                // Clear previous Kulli solution
+                data.forEach(d => d.inKulli = false);
+                
+                // Recompute Kulli's ILP on updated skyband
+                const kulliCands = active.filter(d => d.inSky);
+                const kulliResult = solveKulliILP(kulliCands, kulliCostBudget);
+                
+                if (kulliResult.feasible) {
+                    kulliSolution = kulliResult.sol;
+                    kulliOptCost = kulliResult.cost;
+                    kulliOptPerf = kulliResult.perf;
+                    
+                    const kulliCounts = {};
+                    kulliResult.sol.forEach(s => {
+                        kulliCounts[s.id] = (kulliCounts[s.id] || 0) + 1;
+                        const pt = data.find(d => d.id === s.id);
+                        if (pt) pt.inKulli = true;
+                    });
+                    
+                    // Update Kulli card
+                    const kulliList = document.getElementById('kulliList');
+                    kulliList.innerHTML = '';
+                    Object.entries(kulliCounts).forEach(([id, count]) => {
+                        const d = data.find(x => x.id === parseInt(id));
+                        if (!d) return;
+                        const div = document.createElement('div');
+                        div.className = 'pkg-item';
+                        div.style.color = 'var(--magenta)';
+                        div.innerHTML = `<span>${count > 1 ? count + '× ' : ''}${d.name}</span><span>${(d.perf * count).toFixed(0)} CU $${(d.cost * count).toFixed(2)}</span>`;
+                        kulliList.appendChild(div);
+                    });
+                    
+                    document.getElementById('kulliTotal').textContent = `${kulliResult.perf.toFixed(0)} CU @ $${kulliResult.cost.toFixed(2)}`;
+                } else {
+                    // Kulli's solution became infeasible
+                    kulliSolution = [];
+                    kulliOptCost = 0;
+                    kulliOptPerf = 0;
+                    document.getElementById('kulliList').innerHTML = '<em style="color: var(--text3);">Solution affected by change</em>';
+                    document.getElementById('kulliTotal').textContent = '—';
+                }
+                
+                // Re-update points to show Kulli's new solution
+                updatePoints();
+            }
+            
             // Notify and Jordan reaction
             const actionName = action === 'add' ? 'Added' : action === 'delete' ? 'Deleted' : 'Updated';
             const actionColor = action === 'add' ? 'green' : action === 'delete' ? 'red' : 'blue';
@@ -6077,6 +6813,624 @@
                 newOptCost: optCost.toFixed(2),
                 skyCount: skyCount
             });
+        }
+
+        // ============================================================
+        // KULLI TAB FUNCTIONS
+        // ============================================================
+
+        function enableKulliTab() {
+            kulliEnabled = true;
+            const kulliTab = document.getElementById('tabKulli');
+            const kulliWrapper = document.getElementById('kulliTabWrapper');
+            kulliTab.disabled = false;
+            kulliWrapper.classList.add('enabled');
+            
+            // Show Kulli legend item
+            document.getElementById('legKulli').style.display = '';
+        }
+
+        function disableKulliTab() {
+            kulliEnabled = false;
+            const kulliTab = document.getElementById('tabKulli');
+            const kulliWrapper = document.getElementById('kulliTabWrapper');
+            kulliTab.disabled = true;
+            kulliWrapper.classList.remove('enabled');
+            
+            // Hide Kulli legend item
+            document.getElementById('legKulli').style.display = 'none';
+            
+            // Switch back to Jordan if currently on Kulli
+            if (activeQueryTab === 'kulli') {
+                switchQueryTab('jordan');
+            }
+            
+            // Stop auto-play if running
+            stopKulliAuto();
+            
+            // Hide Kulli's result
+            document.getElementById('kulliCard').style.display = 'none';
+            
+            // Clear Kulli solution
+            kulliSolution = [];
+            data.forEach(d => d.inKulli = false);
+        }
+
+        function switchQueryTab(tab) {
+            if (tab === 'kulli' && !kulliEnabled) {
+                notify('Not Available', 'Complete Jordan\'s query first', 'orange');
+                return;
+            }
+            
+            activeQueryTab = tab;
+            
+            // Update tab buttons
+            document.getElementById('tabJordan').classList.toggle('active', tab === 'jordan');
+            document.getElementById('tabKulli').classList.toggle('active', tab === 'kulli');
+            
+            // Update tab content
+            document.getElementById('jordanTabContent').classList.toggle('active', tab === 'jordan');
+            document.getElementById('kulliTabContent').classList.toggle('active', tab === 'kulli');
+            
+            // Show/hide workflow steps (sections 2-6) based on tab
+            // What-if scenarios (section7) hidden for Kulli, Playground (section8) remains visible for both
+            const workflowSteps = document.querySelector('.workflow-steps');
+            if (workflowSteps) {
+                workflowSteps.style.display = tab === 'kulli' ? 'none' : 'flex';
+            }
+            
+            // Hide What-If Scenarios panel for Kulli tab
+            const section7 = document.getElementById('section7');
+            if (section7) {
+                section7.style.display = tab === 'kulli' ? 'none' : 'block';
+            }
+            
+            // Update dialogue panel header
+            const dialogueAvatar = document.querySelector('.dialogue-avatar');
+            const dialogueName = document.querySelector('.dialogue-name');
+            const dialogueRole = document.querySelector('.dialogue-role');
+            
+            if (tab === 'kulli') {
+                dialogueAvatar.textContent = '👩‍💻';
+                dialogueName.textContent = 'Kulli';
+                dialogueRole.textContent = 'Data Scientist';
+                
+                // Add Kulli's intro message
+                kulliReact('intro');
+            } else {
+                dialogueAvatar.textContent = '👨‍💻';
+                dialogueName.textContent = 'Jordan';
+                dialogueRole.textContent = 'Cloud Infrastructure Engineer';
+                
+                // Restore Jordan's context based on current demo state
+                if (computed && optimalSolution.length > 0) {
+                    addDialogue([
+                        { text: `<span class="emoji">👋</span> Back to <strong>Jordan</strong>. My optimal package is ready — ${optimalSolution.length} VMs for $${lastOptCost.toFixed(2)}/hr.`, type: 'jordan' },
+                        { text: `Try a <strong>What-If scenario</strong> or explore the <strong>Playground</strong>!`, type: 'thought' }
+                    ], true);
+                } else {
+                    addDialogue([
+                        { text: `<span class="emoji">📩</span> New ticket just came in: <strong>"Review VM costs for ML pipeline"</strong>`, type: 'jordan' },
+                        { text: `Let me check what we need... Click <strong>① Apply Query Settings</strong> to get started.`, type: 'thought' }
+                    ], true);
+                }
+            }
+            
+            // Update visualization based on tab
+            updatePoints();
+        }
+
+        function updateKulliSlider() {
+            const slider = document.getElementById('kulliCostSlider');
+            kulliCostBudget = parseFloat(slider.value);
+            document.getElementById('kulliCostDisplay').textContent = `$${kulliCostBudget}`;
+        }
+
+        // Async version for auto-play that uses retry mechanism
+        async function solveKulliQueryAsync() {
+            if (!highsReady) {
+                console.log('solveKulliQueryAsync: HiGHS not ready, waiting...');
+                // Wait for HiGHS to be ready
+                await new Promise(resolve => {
+                    const check = () => {
+                        if (highsReady) resolve();
+                        else setTimeout(check, 100);
+                    };
+                    check();
+                });
+            }
+            
+            if (!computed || !lastSkybandIds.length) {
+                notify('Not Ready', 'Run Jordan\'s query first', 'orange');
+                return;
+            }
+            
+            // Read Kulli's parameters from inputs FRESH each time
+            kulliMinItems = parseInt(document.getElementById('kulliMinItems').value) || 5;
+            kulliMaxItems = parseInt(document.getElementById('kulliMaxItems').value) || 8;
+            kulliRepeatLimit = parseInt(document.getElementById('kulliRepeat').value) || 1;
+            
+            console.log('solveKulliQueryAsync called with:', {
+                budget: kulliCostBudget,
+                minItems: kulliMinItems,
+                maxItems: kulliMaxItems,
+                repeatLimit: kulliRepeatLimit
+            });
+            
+            const t0 = performance.now();
+            
+            // Clear previous Kulli solution
+            data.forEach(d => d.inKulli = false);
+            
+            // Get skyband candidates
+            const cands = data.filter(d => d.inSky && !d.removed);
+            
+            if (cands.length === 0) {
+                notify('No Candidates', 'No VMs in skyband', 'orange');
+                document.getElementById('kulliCard').style.display = 'block';
+                document.getElementById('kulliList').innerHTML = '<em style="color: var(--text3);">No VMs available</em>';
+                document.getElementById('kulliTotal').textContent = '—';
+                return;
+            }
+            
+            // Use retry mechanism for auto-play stability
+            let result;
+            try {
+                result = await solveKulliILPWithRetry(cands, kulliCostBudget);
+            } catch (e) {
+                console.error('solveKulliQueryAsync error:', e);
+                // Show temporary error message but continue
+                document.getElementById('kulliAutoStatus').textContent = 'Solver hiccup, retrying...';
+                return;
+            }
+            
+            const ms = Math.round(performance.now() - t0);
+            
+            if (!result.feasible) {
+                kulliSolution = [];
+                kulliOptCost = 0;
+                kulliOptPerf = 0;
+                
+                // Silent update during auto-play - no notifications or dialogue
+                document.getElementById('kulliCard').style.display = 'block';
+                document.getElementById('kulliList').innerHTML = '<em style="color: var(--text3);">No feasible solution with budget ≤ $' + kulliCostBudget + '</em>';
+                document.getElementById('kulliTotal').textContent = '—';
+                document.getElementById('kulliTime').textContent = '—';
+                updatePoints();
+                return;
+            }
+            
+            // Store solution
+            kulliSolution = result.sol;
+            kulliOptCost = result.cost;
+            kulliOptPerf = result.perf;
+            
+            const counts = {};
+            result.sol.forEach(s => {
+                counts[s.id] = (counts[s.id] || 0) + 1;
+                const pt = data.find(d => d.id === s.id);
+                if (pt) pt.inKulli = true;
+            });
+            
+            // Update Kulli card
+            const list = document.getElementById('kulliList');
+            list.innerHTML = '';
+            
+            Object.entries(counts).forEach(([id, count]) => {
+                const d = data.find(x => x.id === parseInt(id));
+                if (!d) return;
+                const div = document.createElement('div');
+                div.className = 'pkg-item';
+                div.style.color = 'var(--magenta)';
+                div.innerHTML = `<span>${count > 1 ? count + '× ' : ''}${d.name}</span><span>${(d.perf * count).toFixed(0)} CU $${(d.cost * count).toFixed(2)}</span>`;
+                list.appendChild(div);
+            });
+            
+            document.getElementById('kulliTotal').textContent = `${result.perf.toFixed(0)} CU @ $${result.cost.toFixed(2)}`;
+            document.getElementById('kulliTime').textContent = formatTime(ms);
+            
+            document.getElementById('kulliCard').style.display = 'block';
+            
+            // Silent update during auto-play - no notifications or dialogue
+            updatePoints();
+        }
+
+        function solveKulliQuery() {
+            if (!highsReady) {
+                notify('Loading', 'Solver still initializing...', 'orange');
+                return;
+            }
+            
+            if (!computed || !lastSkybandIds.length) {
+                notify('Not Ready', 'Run Jordan\'s query first', 'orange');
+                return;
+            }
+            
+            // Read Kulli's parameters from inputs FRESH each time
+            kulliMinItems = parseInt(document.getElementById('kulliMinItems').value) || 5;
+            kulliMaxItems = parseInt(document.getElementById('kulliMaxItems').value) || 8;
+            kulliRepeatLimit = parseInt(document.getElementById('kulliRepeat').value) || 1;
+            
+            // Debug: Log parameters being used
+            console.log('solveKulliQuery called with:', {
+                budget: kulliCostBudget,
+                minItems: kulliMinItems,
+                maxItems: kulliMaxItems,
+                repeatLimit: kulliRepeatLimit
+            });
+            
+            const t0 = performance.now();
+            
+            // Clear previous Kulli solution
+            data.forEach(d => d.inKulli = false);
+            
+            // Get skyband candidates (use all skyband, cost constraint is in ILP)
+            const cands = data.filter(d => d.inSky && !d.removed);
+            
+            // Debug: Log candidates
+            console.log('Kulli candidates:', cands.length, 'skyband VMs available');
+            
+            if (cands.length === 0) {
+                notify('No Candidates', 'No VMs in skyband', 'orange');
+                document.getElementById('kulliCard').style.display = 'block';
+                document.getElementById('kulliList').innerHTML = '<em style="color: var(--text3);">No VMs available</em>';
+                document.getElementById('kulliTotal').textContent = '—';
+                return;
+            }
+            
+            // Solve ILP for Kulli: Maximize CU subject to cost budget
+            const result = solveKulliILP(cands, kulliCostBudget);
+            const ms = Math.round(performance.now() - t0);
+            
+            if (!result.feasible) {
+                // Clear previous solution state
+                kulliSolution = [];
+                kulliOptCost = 0;
+                kulliOptPerf = 0;
+                
+                notify('Infeasible', 'No solution within budget', 'orange');
+                document.getElementById('kulliCard').style.display = 'block';
+                document.getElementById('kulliList').innerHTML = '<em style="color: var(--text3);">No feasible solution with budget ≤ $' + kulliCostBudget + '</em>';
+                document.getElementById('kulliTotal').textContent = '—';
+                document.getElementById('kulliTime').textContent = '—';
+                kulliReact('infeasible', { budget: kulliCostBudget, minItems: kulliMinItems });
+                
+                // Update visualization to clear Kulli points
+                updatePoints();
+                return;
+            }
+            
+            // Store solution
+            kulliSolution = result.sol;
+            kulliOptCost = result.cost;
+            kulliOptPerf = result.perf;
+            
+            const counts = {};
+            result.sol.forEach(s => {
+                counts[s.id] = (counts[s.id] || 0) + 1;
+                const pt = data.find(d => d.id === s.id);
+                if (pt) pt.inKulli = true;
+            });
+            
+            // Update Kulli card
+            const list = document.getElementById('kulliList');
+            list.innerHTML = '';
+            
+            Object.entries(counts).forEach(([id, count]) => {
+                const d = data.find(x => x.id === parseInt(id));
+                if (!d) return;
+                const div = document.createElement('div');
+                div.className = 'pkg-item';
+                div.style.color = 'var(--magenta)';
+                div.innerHTML = `<span>${count > 1 ? count + '× ' : ''}${d.name}</span><span>${(d.perf * count).toFixed(0)} CU $${(d.cost * count).toFixed(2)}</span>`;
+                list.appendChild(div);
+            });
+            
+            document.getElementById('kulliTotal').textContent = `${result.perf.toFixed(0)} CU @ $${result.cost.toFixed(2)}`;
+            document.getElementById('kulliTime').textContent = formatTime(ms);
+            
+            document.getElementById('kulliCard').style.display = 'block';
+            
+            notify('Kulli\'s Query', `${result.perf.toFixed(0)} CU in ${formatTime(ms)}`, 'magenta');
+            kulliReact('solved', { perf: result.perf.toFixed(0), cost: result.cost.toFixed(2), budget: kulliCostBudget, time: formatTime(ms) });
+            updatePoints();
+        }
+        
+        // Kulli's ILP: Maximize CU subject to cost budget
+        // Uses retry mechanism to handle WASM corruption
+        async function solveKulliILPWithRetry(candidates, costBudget, retryCount = 0) {
+            // For auto-play stability: create a fresh HiGHS instance for each solve
+            if (retryCount === 0) {
+                console.log('Creating fresh HiGHS instance for this solve...');
+                try {
+                    // Create a completely fresh instance
+                    const freshHighs = await Module({
+                        locateFile: (file) => `https://cdn.jsdelivr.net/npm/highs@1.8.0/build/${file}`
+                    });
+                    highs = freshHighs;
+                    highsReady = true;
+                    highsSolving = false;
+                } catch (e) {
+                    console.error('Failed to create fresh HiGHS:', e);
+                    return { feasible: false, sol: [], perf: 0, cost: 0, error: e.message };
+                }
+            }
+            
+            const result = solveKulliILP(candidates, costBudget);
+            
+            // If it failed due to error (not infeasibility) and we haven't retried yet
+            if (result.error && retryCount < 2) {
+                console.log('Kulli ILP failed with error, creating new HiGHS instance and retrying... (attempt ' + (retryCount + 2) + ')');
+                
+                // Wait before retry
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                // Retry with fresh instance
+                return solveKulliILPWithRetry(candidates, costBudget, retryCount + 1);
+            }
+            
+            return result;
+        }
+        
+        function solveKulliILP(candidates, costBudget) {
+            const available = candidates.filter(d => !d.removed);
+            
+            if (available.length === 0) {
+                return { feasible: false, sol: [], perf: 0, cost: 0 };
+            }
+            
+            if (!highsReady || !highs) {
+                return { feasible: false, sol: [], perf: 0, cost: 0, error: 'Solver not ready' };
+            }
+            
+            // Check if another solve is in progress
+            if (highsSolving) {
+                console.warn('Kulli ILP: Another solve in progress, skipping');
+                return { feasible: false, sol: [], perf: 0, cost: 0, error: 'Solver busy' };
+            }
+            
+            // Ensure costBudget is a valid number
+            const budget = Number(costBudget);
+            if (isNaN(budget) || budget <= 0) {
+                console.error('Invalid budget:', costBudget);
+                return { feasible: false, sol: [], perf: 0, cost: 0, error: 'Invalid budget' };
+            }
+            
+            // Debug: Log current parameters
+            console.log('Kulli ILP params:', { budget, kulliMinItems, kulliMaxItems, kulliRepeatLimit, candidates: available.length });
+            
+            // Set solving flag
+            highsSolving = true;
+            
+            // Build LP format: Maximize CU subject to cost budget
+            const lines = [];
+            const varMap = {};
+            
+            // Objective: Maximize performance (CU)
+            lines.push('Maximize');
+            const objTerms = available.map(d => {
+                const varName = `x${d.id}`;
+                varMap[d.id] = varName;
+                // Use toFixed to ensure clean number format
+                const perf = Number(d.perf);
+                return `${perf.toFixed(1)} ${varName}`;
+            });
+            lines.push(' obj: ' + objTerms.join(' + '));
+            
+            // Constraints
+            lines.push('Subject To');
+            
+            // Cost budget constraint: sum(cost * x) <= budget
+            const costTerms = available.map(d => {
+                const cost = Number(d.cost);
+                return `${cost.toFixed(2)} x${d.id}`;
+            });
+            lines.push(` cost_budget: ${costTerms.join(' + ')} <= ${budget}`);
+            
+            // Cardinality constraints (Kulli's parameters)
+            const countTerms = available.map(d => `x${d.id}`);
+            lines.push(` count_min: ${countTerms.join(' + ')} >= ${kulliMinItems}`);
+            lines.push(` count_max: ${countTerms.join(' + ')} <= ${kulliMaxItems}`);
+            
+            // Bounds (Kulli's repeat limit)
+            lines.push('Bounds');
+            available.forEach(d => {
+                lines.push(` 0 <= x${d.id} <= ${kulliRepeatLimit}`);
+            });
+            
+            // Integer variables
+            lines.push('General');
+            lines.push(' ' + available.map(d => `x${d.id}`).join(' '));
+            
+            lines.push('End');
+            
+            const lp = lines.join('\n');
+            
+            // Debug: Log LP
+            console.log('Kulli LP:', lp);
+            
+            try {
+                const result = highs.solve(lp);
+                
+                // Clear solving flag and increment solve count
+                highsSolving = false;
+                highsSolveCount++;
+                
+                // Debug: Log result status
+                console.log('Kulli result status:', result.Status, '(solve #' + highsSolveCount + ')');
+                
+                if (result.Status !== 'Optimal') {
+                    console.log('Kulli infeasible or error - status:', result.Status);
+                    return { feasible: false, sol: [], perf: 0, cost: 0 };
+                }
+                
+                // Extract solution
+                const sol = [];
+                let totalPerf = 0, totalCost = 0;
+                
+                available.forEach(d => {
+                    const varName = `x${d.id}`;
+                    const colData = result.Columns[varName];
+                    const count = colData ? Math.round(colData.Primal) : 0;
+                    
+                    if (count > 0) {
+                        for (let i = 0; i < count; i++) {
+                            sol.push({ ...d, count });
+                        }
+                        totalPerf += d.perf * count;
+                        totalCost += d.cost * count;
+                    }
+                });
+                
+                return { feasible: true, sol, perf: totalPerf, cost: totalCost };
+                
+            } catch (e) {
+                // Clear solving flag
+                highsSolving = false;
+                
+                console.error('Kulli ILP solve error:', e);
+                console.error('LP that caused error:', lp);
+                // Reset HiGHS state on error - force full reinit
+                console.log('Attempting to reinitialize HiGHS...');
+                highsReady = false;
+                highsLoadPromise = null; // Clear the cached promise so initHiGHS will reload
+                initHiGHS().then(() => {
+                    console.log('HiGHS reinitialized after error');
+                }).catch(err => {
+                    console.error('HiGHS reinit failed:', err);
+                });
+                return { feasible: false, sol: [], perf: 0, cost: 0, error: e.message };
+            }
+        }
+
+        function toggleKulliAuto() {
+            if (kulliAutoPlay) {
+                stopKulliAuto();
+            } else {
+                startKulliAuto();
+            }
+        }
+
+        function startKulliAuto() {
+            if (!kulliEnabled) return;
+            
+            kulliAutoPlay = true;
+            let consecutiveErrors = 0;
+            document.getElementById('kulliAutoToggle').classList.add('on');
+            document.getElementById('kulliAutoStatus').classList.add('running');
+            
+            // Show a one-time intro message for auto-play
+            addDialogue([
+                { text: `<span class="emoji">🎬</span> Watch how my optimal package changes as the budget increases...`, type: 'kulli' },
+                { text: `I'll sweep from <strong>$2</strong> to <strong>$20</strong>. Notice how different VMs become optimal at different price points!`, type: 'thought' }
+            ], true);
+            
+            // Reset slider to start value (2)
+            kulliCostBudget = 2;
+            document.getElementById('kulliCostSlider').value = kulliCostBudget;
+            document.getElementById('kulliCostDisplay').textContent = `$${kulliCostBudget}`;
+            
+            // Use recursive setTimeout with async/await for better control
+            async function scheduleNextSolve() {
+                if (!kulliAutoPlay) return;
+                
+                kulliAutoInterval = setTimeout(async () => {
+                    if (!kulliAutoPlay) return;
+                    
+                    // Skip if HiGHS is busy
+                    if (highsSolving) {
+                        console.log('Auto-play: HiGHS busy, waiting...');
+                        scheduleNextSolve();
+                        return;
+                    }
+                    
+                    // If too many consecutive errors, stop and notify
+                    if (consecutiveErrors >= 3) {
+                        console.error('Auto-play: Too many consecutive errors, stopping');
+                        notify('Auto-play Error', 'Solver unstable, please try manual mode', 'orange');
+                        stopKulliAuto();
+                        return;
+                    }
+                    
+                    // Update UI for current budget
+                    document.getElementById('kulliCostSlider').value = kulliCostBudget;
+                    document.getElementById('kulliCostDisplay').textContent = `$${kulliCostBudget}`;
+                    document.getElementById('kulliAutoStatus').textContent = `Budget: $${kulliCostBudget}`;
+                    
+                    // Use async version with retry mechanism (silent - no dialogue updates)
+                    try {
+                        await solveKulliQueryAsync();
+                        consecutiveErrors = 0; // Reset on success
+                    } catch (e) {
+                        console.error('Auto-play solve error:', e);
+                        consecutiveErrors++;
+                    }
+                    
+                    // Increment budget for next iteration
+                    kulliCostBudget += 1;
+                    
+                    // Check if we've reached the end (20)
+                    if (kulliCostBudget > 20) {
+                        // Loop back to start
+                        kulliCostBudget = 2;
+                    }
+                    
+                    // Schedule next iteration only after solve completes
+                    if (kulliAutoPlay) {
+                        scheduleNextSolve();
+                    }
+                }, 1000); // 1 second between solves
+            }
+            
+            // Start the recursive loop after a brief delay
+            setTimeout(scheduleNextSolve, 500);
+        }
+
+        function stopKulliAuto() {
+            const wasPlaying = kulliAutoPlay;
+            kulliAutoPlay = false;
+            document.getElementById('kulliAutoToggle').classList.remove('on');
+            document.getElementById('kulliAutoStatus').classList.remove('running');
+            document.getElementById('kulliAutoStatus').textContent = 'Click to animate';
+            
+            if (kulliAutoInterval) {
+                clearTimeout(kulliAutoInterval);
+                kulliAutoInterval = null;
+            }
+            
+            // Show closing message if user stopped it (not from error)
+            if (wasPlaying && kulliSolution.length > 0) {
+                addDialogue([
+                    { text: `<span class="emoji">✋</span> Paused at <strong>$${kulliCostBudget}</strong> budget. Current optimum: <strong>${kulliOptPerf.toFixed(0)} CU</strong> @ <strong>$${kulliOptCost.toFixed(2)}</strong>`, type: 'kulli' },
+                    { text: `Try adjusting the slider manually or click <strong>Solve</strong> to explore different budgets.`, type: 'thought' }
+                ], true);
+            }
+        }
+
+        // Kulli's simple reactions/thoughts
+        function kulliReact(event, params = {}) {
+            const messages = {
+                intro: [
+                    { text: `<span class="emoji">👋</span> Hi! I'm <strong>Kulli</strong>, the data scientist.`, type: 'kulli' },
+                    { text: `My goal is to <strong>maximize compute units</strong> within a budget.`, type: 'thought' },
+                    { text: `Good news: I can reuse the <strong>same K-Skyband</strong> that Jordan computed — no need to start from scratch!`, type: 'thought' },
+                    { text: `Try adjusting the cost budget slider and click <strong>Solve</strong>!`, type: 'thought' }
+                ],
+                solved: [
+                    { text: `<span class="emoji">✨</span> Found a package with <strong>${params.perf} CU</strong> for $${params.cost}!`, type: 'kulli' },
+                    { text: `Solved in just <strong>${params.time}</strong> — same skyband, different objective!`, type: 'thought' },
+                    { text: `The K-Skyband works for <em>any</em> query with matching preference directions.`, type: 'thought' }
+                ],
+                infeasible: [
+                    { text: `<span class="emoji">🤔</span> Budget of <strong>$${params.budget}</strong> is too tight...`, type: 'kulli' },
+                    { text: `Need at least ${params.minItems || 5} items but can't fit them in this budget.`, type: 'thought' }
+                ]
+            };
+            
+            const msgs = messages[event];
+            if (msgs) {
+                addDialogue(msgs, true);
+            }
         }
 
         window.addEventListener('load', async () => {
