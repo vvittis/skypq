@@ -2,7 +2,9 @@
 
 This repository hosts the project website for **Incremental Package Queries** research.
 
-🌐 **Live Site**: [https://umass-dream-lab.github.io/skypq/](https://umass-dream-lab.github.io/skypq/) *(coming soon)*
+🌐 **Live Demo**: [https://umass-dream-lab.github.io/skypq/demo.html](https://umass-dream-lab.github.io/skypq/demo.html) 
+
+🌐 **Project Website**: [https://umass-dream-lab.github.io/skypq](https://umass-dream-lab.github.io/skypq) 
 
 ## About
 
